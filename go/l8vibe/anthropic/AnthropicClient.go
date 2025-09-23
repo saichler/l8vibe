@@ -13,8 +13,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/saichler/vibe.with.layer8/go/l8vibe/consts"
-	"github.com/saichler/vibe.with.layer8/go/types"
+	"github.com/saichler/l8vibe/go/l8vibe/consts"
+	"github.com/saichler/l8vibe/go/types"
 )
 
 type AnthropicClient struct {

@@ -1,4 +1,4 @@
-package service
+package project
 
 import (
 	"errors"
@@ -8,8 +8,8 @@ import (
 	"strings"
 
 	strings2 "github.com/saichler/l8utils/go/utils/strings"
-	"github.com/saichler/vibe.with.layer8/go/l8vibe/anthropic"
-	"github.com/saichler/vibe.with.layer8/go/types"
+	"github.com/saichler/l8vibe/go/l8vibe/anthropic"
+	"github.com/saichler/l8vibe/go/types"
 )
 
 type AntropicSimulator struct {

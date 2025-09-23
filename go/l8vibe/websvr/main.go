@@ -7,14 +7,14 @@ import (
 	"github.com/saichler/l8types/go/types/l8api"
 	"github.com/saichler/l8types/go/types/l8health"
 	"github.com/saichler/l8types/go/types/l8web"
+	"github.com/saichler/l8vibe/go/l8vibe/common"
+	"github.com/saichler/l8vibe/go/l8vibe/consts"
+	"github.com/saichler/l8vibe/go/l8vibe/project"
+	types2 "github.com/saichler/l8vibe/go/types"
 	"github.com/saichler/l8web/go/web/server"
 	"github.com/saichler/layer8/go/overlay/health"
 	"github.com/saichler/layer8/go/overlay/protocol"
 	"github.com/saichler/layer8/go/overlay/vnic"
-	"github.com/saichler/vibe.with.layer8/go/l8vibe/common"
-	"github.com/saichler/vibe.with.layer8/go/l8vibe/consts"
-	"github.com/saichler/vibe.with.layer8/go/l8vibe/project/service"
-	types2 "github.com/saichler/vibe.with.layer8/go/types"
 )
 
 func main() {
@@ -55,8 +55,8 @@ func startWebServer(resources ifs.IResources) {
 	_, err = nic.Resources().Services().Activate(server.ServiceTypeName, ifs.WebService,
 		0, nic.Resources(), nic, svr)
 
-	nic.Resources().Registry().Register(&service.ProjectService{})
-	nic.Resources().Services().Activate(service.ServiceType, service.ServiceName, service.ServiceArea,
+	nic.Resources().Registry().Register(&project.ProjectService{})
+	nic.Resources().Services().Activate(project.ServiceType, project.ServiceName, project.ServiceArea,
 		resources, nic)
 
 	nic.Resources().Logger().Info("Web Server Started!")

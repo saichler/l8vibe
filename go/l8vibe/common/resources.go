@@ -5,6 +5,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/saichler/l8reflect/go/reflect/introspecting"
 	"github.com/saichler/l8services/go/services/manager"
 	"github.com/saichler/l8types/go/ifs"
 	"github.com/saichler/l8types/go/types/l8sysconfig"
@@ -12,7 +13,6 @@ import (
 	"github.com/saichler/l8utils/go/utils/registry"
 	"github.com/saichler/l8utils/go/utils/resources"
 	"github.com/saichler/l8web/go/web/server"
-	"github.com/saichler/reflect/go/reflect/introspecting"
 )
 
 func Resources(alias string, vnetPort uint32) ifs.IResources {

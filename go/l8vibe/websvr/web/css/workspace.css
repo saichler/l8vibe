@@ -459,52 +459,17 @@ html, body {
   display: none;
 }
 
-/* Resize Separator */
+/* Resize Separator - Invisible but functional */
 .resize-separator {
   width: 100%;
-  height: 12px;
-  background: var(--stone-medium);
+  height: 4px;
+  background: transparent;
   cursor: ns-resize;
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   user-select: none;
   flex-shrink: 0;
   z-index: 100;
-  /* Ensure separator is always grabbable */
-  min-height: 12px;
-  /* Remove focus outline */
-  outline: none;
-}
-
-.resize-separator:hover {
-  background: var(--stone-dark);
-  cursor: ns-resize;
-}
-
-.resize-separator.dragging {
-  background: var(--earth-brown);
-  cursor: ns-resize;
-}
-
-/* Ensure separator never gets focus ring */
-.resize-separator:focus {
-  outline: none;
-}
-
-.resize-handle {
-  display: flex;
-  gap: 3px;
-  pointer-events: none;
-}
-
-.resize-handle span {
-  width: 30px;
-  height: 3px;
-  background: var(--paper-white);
-  border-radius: 1.5px;
-  opacity: 0.6;
+  margin: -2px 0; /* Overlap with adjacent elements */
 }
 
 /* Scrollbar Styling */

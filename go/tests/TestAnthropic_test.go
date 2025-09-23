@@ -5,6 +5,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/saichler/l8reflect/go/reflect/introspecting"
 	"github.com/saichler/l8services/go/services/dcache"
 	"github.com/saichler/l8services/go/services/manager"
 	"github.com/saichler/l8srlz/go/serialize/object"
@@ -14,11 +15,10 @@ import (
 	"github.com/saichler/l8utils/go/utils/logger"
 	"github.com/saichler/l8utils/go/utils/registry"
 	"github.com/saichler/l8utils/go/utils/resources"
-	"github.com/saichler/reflect/go/reflect/introspecting"
-	"github.com/saichler/vibe.with.layer8/go/l8vibe/anthropic"
-	"github.com/saichler/vibe.with.layer8/go/l8vibe/consts"
-	"github.com/saichler/vibe.with.layer8/go/l8vibe/project/service"
-	"github.com/saichler/vibe.with.layer8/go/types"
+	"github.com/saichler/l8vibe/go/l8vibe/anthropic"
+	"github.com/saichler/l8vibe/go/l8vibe/consts"
+	"github.com/saichler/l8vibe/go/l8vibe/project"
+	"github.com/saichler/l8vibe/go/types"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 )
@@ -138,7 +138,7 @@ func TestAnthropicResponse1(t *testing.T) {
 }
 
 func TestSimulator(t *testing.T) {
-	sim := service.NewAnthropicSimulator()
+	sim := project.NewAnthropicSimulator()
 	project := &types.Project{}
 	project.Name = "Test"
 	project.User = "User"

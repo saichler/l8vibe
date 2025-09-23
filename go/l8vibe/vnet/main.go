@@ -4,9 +4,9 @@ import (
 	"os"
 
 	"github.com/saichler/l8types/go/ifs"
+	"github.com/saichler/l8vibe/go/l8vibe/common"
+	"github.com/saichler/l8vibe/go/l8vibe/consts"
 	"github.com/saichler/layer8/go/overlay/vnet"
-	"github.com/saichler/vibe.with.layer8/go/l8vibe/common"
-	"github.com/saichler/vibe.with.layer8/go/l8vibe/consts"
 )
 
 func main() {

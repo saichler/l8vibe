@@ -1,4 +1,4 @@
-package service
+package project
 
 import (
 	"fmt"
@@ -6,16 +6,16 @@ import (
 	strings2 "strings"
 	"time"
 
+	"github.com/saichler/l8reflect/go/reflect/introspecting"
 	"github.com/saichler/l8services/go/services/dcache"
 	"github.com/saichler/l8srlz/go/serialize/object"
 	"github.com/saichler/l8types/go/ifs"
 	"github.com/saichler/l8types/go/types/l8api"
 	"github.com/saichler/l8utils/go/utils/strings"
 	"github.com/saichler/l8utils/go/utils/web"
-	"github.com/saichler/reflect/go/reflect/introspecting"
-	"github.com/saichler/vibe.with.layer8/go/l8vibe/anthropic"
-	"github.com/saichler/vibe.with.layer8/go/l8vibe/common"
-	"github.com/saichler/vibe.with.layer8/go/types"
+	"github.com/saichler/l8vibe/go/l8vibe/anthropic"
+	"github.com/saichler/l8vibe/go/l8vibe/common"
+	"github.com/saichler/l8vibe/go/types"
 	"google.golang.org/protobuf/proto"
 )
 

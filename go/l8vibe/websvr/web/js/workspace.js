@@ -679,12 +679,29 @@ class WorkspaceManager {
         if (!separator || !chatPanel) return;
 
         let isResizing = false;
+        let startY = 0;
+        let startHeight = 0;
 
         const handleMouseDown = (e) => {
             isResizing = true;
+            startY = e.clientY;
+            startHeight = chatPanel.offsetHeight;
             separator.classList.add('dragging');
             document.body.style.userSelect = 'none';
             document.body.style.cursor = 'ns-resize';
+
+            // Add temporary overlay to capture all mouse events
+            const overlay = document.createElement('div');
+            overlay.id = 'resize-overlay';
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.zIndex = '9999';
+            overlay.style.cursor = 'ns-resize';
+            document.body.appendChild(overlay);
+
             e.preventDefault();
         };
 
@@ -694,11 +711,12 @@ class WorkspaceManager {
             const workspaceMain = document.querySelector('.workspace-main');
             const workspaceRect = workspaceMain.getBoundingClientRect();
 
-            // Calculate new height based on mouse position
-            const newHeight = workspaceRect.bottom - e.clientY;
+            // Calculate height difference from start position
+            const deltaY = startY - e.clientY;
+            const newHeight = startHeight + deltaY;
 
             // Set height with reasonable constraints
-            if (newHeight > 10 && newHeight < workspaceRect.height - 100) {
+            if (newHeight > 50 && newHeight < workspaceRect.height - 100) {
                 chatPanel.style.height = newHeight + 'px';
             }
 
@@ -712,6 +730,12 @@ class WorkspaceManager {
                 separator.classList.remove('dragging');
                 document.body.style.userSelect = '';
                 document.body.style.cursor = '';
+
+                // Remove the overlay
+                const overlay = document.getElementById('resize-overlay');
+                if (overlay) {
+                    overlay.remove();
+                }
 
                 // Force remove any focus
                 separator.blur();

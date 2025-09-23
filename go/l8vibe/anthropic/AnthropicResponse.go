@@ -7,7 +7,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/saichler/vibe.with.layer8/go/types"
+	"github.com/saichler/l8vibe/go/types"
 	"google.golang.org/protobuf/proto"
 )
 

@@ -27,7 +27,7 @@ func startWebServer(resources ifs.IResources) {
 	serverConfig := &server.RestServerConfig{
 		Host:           ipsegment.MachineIP,
 		Port:           consts.WEBSITE_PORT,
-		Authentication: false,
+		Authentication: true,
 		CertName:       consts.WEBSITE_CERT,
 		Prefix:         consts.WEBSITE_PREFIX,
 	}
@@ -53,6 +53,7 @@ func startWebServer(resources ifs.IResources) {
 	project.Activate(nic)
 
 	sla := ifs.NewServiceLevelAgreement(&server.WebService{}, ifs.WebService, 0, false, nil)
+	sla.SetArgs(svr)
 	nic.Resources().Services().Activate(sla, nic)
 
 	nic.Resources().Logger().Info("Web Server Started!")

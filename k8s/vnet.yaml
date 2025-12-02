@@ -29,4 +29,12 @@ spec:
           image: saichler/l8vibe-vnet:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 23333
+            - containerPort: 23332
+          volumeMounts:
+            - name: hdata
+              mountPath: /data
+      volumes:
+        - name: hdata
+          hostPath:
+            path: /data
+            type: DirectoryOrCreate

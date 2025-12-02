@@ -22,7 +22,7 @@ func Resources(alias string, vnetPort uint32) ifs.IResources {
 
 	res.Set(registry.NewRegistry())
 
-	sec, err := ifs.LoadSecurityProvider()
+	sec, err := ifs.LoadSecurityProvider(res)
 	if err != nil {
 		panic("Failed to load security provider")
 	}

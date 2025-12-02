@@ -6,7 +6,7 @@ import (
 	strings2 "strings"
 	"time"
 
-	"github.com/saichler/l8reflect/go/reflect/introspecting"
+	"github.com/saichler/l8reflect/go/reflect/helping"
 	"github.com/saichler/l8services/go/services/dcache"
 	"github.com/saichler/l8srlz/go/serialize/object"
 	"github.com/saichler/l8types/go/ifs"
@@ -20,7 +20,6 @@ import (
 )
 
 const (
-	ServiceType = "ProjectService"
 	ServiceName = "proj"
 	ServiceArea = byte(0)
 )
@@ -32,16 +31,20 @@ type ProjectService struct {
 	anthropicClinet *anthropic.AnthropicClient
 }
 
+func Activate(vnic ifs.IVNic) {
+	sla := ifs.NewServiceLevelAgreement(&ProjectService{}, ServiceName, ServiceArea, true, nil)
+	vnic.Resources().Services().Activate(sla, vnic)
+}
+
 // Activate activates the ProjectService
-func (this *ProjectService) Activate(serviceName string, serviceArea byte, resources ifs.IResources, listener ifs.IServiceCacheListener, args ...interface{}) error {
-	resources.Registry().Register(&types.Project{})
-	resources.Registry().Register(&types.ProjectList{})
-	resources.Registry().Register(&l8api.L8Query{})
-	node, _ := resources.Introspector().Inspect(&types.Project{})
-	introspecting.AddPrimaryKeyDecorator(node, "User", "Name")
-	initData := this.load(resources)
-	this.cache = dcache.NewDistributedCacheNoSync(ServiceName, ServiceArea, &types.Project{}, initData,
-		listener, resources)
+func (this *ProjectService) Activate(sla *ifs.ServiceLevelAgreement, vnic ifs.IVNic) error {
+	vnic.Resources().Registry().Register(&types.Project{})
+	vnic.Resources().Registry().Register(&types.ProjectList{})
+	vnic.Resources().Registry().Register(&l8api.L8Query{})
+	node, _ := vnic.Resources().Introspector().Inspect(&types.Project{})
+	helping.AddPrimaryKeyDecorator(node, "User", "Name")
+	initData := this.load(vnic.Resources())
+	this.cache = dcache.NewDistributedCacheNoSync(ServiceName, ServiceArea, &types.Project{}, initData, vnic, vnic.Resources())
 	this.anthropicClinet = anthropic.NewAnthropicClient()
 	//this.simulator = NewAnthropicSimulator()
 	return nil

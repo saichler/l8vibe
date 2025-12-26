@@ -6,7 +6,6 @@ import (
 	strings2 "strings"
 	"time"
 
-	"github.com/saichler/l8reflect/go/reflect/helping"
 	"github.com/saichler/l8services/go/services/dcache"
 	"github.com/saichler/l8srlz/go/serialize/object"
 	"github.com/saichler/l8types/go/ifs"
@@ -41,8 +40,7 @@ func (this *ProjectService) Activate(sla *ifs.ServiceLevelAgreement, vnic ifs.IV
 	vnic.Resources().Registry().Register(&types.Project{})
 	vnic.Resources().Registry().Register(&types.ProjectList{})
 	vnic.Resources().Registry().Register(&l8api.L8Query{})
-	node, _ := vnic.Resources().Introspector().Inspect(&types.Project{})
-	helping.AddPrimaryKeyDecorator(node, "User", "Name")
+	vnic.Resources().Introspector().Decorators().AddPrimaryKeyDecorator(&types.Project{}, "User", "Name")
 	initData := this.load(vnic.Resources())
 	this.cache = dcache.NewDistributedCacheNoSync(ServiceName, ServiceArea, &types.Project{}, initData, vnic, vnic.Resources())
 	this.anthropicClinet = anthropic.NewAnthropicClient()
@@ -248,8 +246,10 @@ func (this *ProjectService) TransactionConfig() ifs.ITransactionConfig {
 
 // WebService returns the web service
 func (this *ProjectService) WebService() ifs.IWebService {
-	ws := web.New(ServiceName, ServiceArea, &types.Project{},
-		&types.Project{}, nil, nil, &types.Project{}, &types.Project{}, nil, nil, &l8api.L8Query{}, &types.ProjectList{})
+	ws := web.New(ServiceName, ServiceArea, 0)
+	ws.AddEndpoint(&types.Project{}, ifs.POST, &types.Project{})
+	ws.AddEndpoint(&types.Project{}, ifs.PATCH, &types.Project{})
+	ws.AddEndpoint(&l8api.L8Query{}, ifs.GET, &types.ProjectList{})
 	return ws
 }
 

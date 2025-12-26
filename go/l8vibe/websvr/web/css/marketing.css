@@ -45,6 +45,12 @@
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
+.logo-icon .logo-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
 .logo-text {
   display: flex;
   flex-direction: column;
@@ -860,6 +866,14 @@
 
 .modal .login-form {
   padding: var(--space-l) var(--space-xl) var(--space-xl) var(--space-xl);
+}
+
+.demo-credentials {
+  margin-top: var(--space-m);
+  font-size: 0.75rem;
+  color: var(--stone-dark);
+  text-align: center;
+  opacity: 0.7;
 }
 
 /* Navigation button styling */

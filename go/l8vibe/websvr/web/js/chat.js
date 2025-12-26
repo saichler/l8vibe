@@ -161,9 +161,7 @@ class ChatManager {
         // Send PATCH request to /l8vibe/0/proj endpoint
         const response = await fetch('/l8vibe/0/proj', {
             method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: window.auth.getAuthHeaders(),
             body: JSON.stringify(projectClone)
         });
 

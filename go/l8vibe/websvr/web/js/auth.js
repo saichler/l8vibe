@@ -3,6 +3,7 @@ class AuthManager {
     constructor() {
         this.currentUser = null;
         this.isAuthenticated = false;
+        this.bearerToken = null;
     }
 
     // Initialize authentication event listeners
@@ -108,7 +109,7 @@ class AuthManager {
             this.showSuccess('Welcome back! You can now create projects.');
 
         } catch (error) {
-            this.showError('Authentication failed. Please check your credentials.');
+            this.showError(error.message || 'Authentication failed. Please try again.');
             console.error('Login error:', error);
         } finally {
             // Reset button state
@@ -125,6 +126,7 @@ class AuthManager {
         // Clear authentication
         this.currentUser = null;
         this.isAuthenticated = false;
+        this.bearerToken = null;
         this.clearStoredAuth();
 
         // Reset forms
@@ -144,18 +146,44 @@ class AuthManager {
         this.showSuccess('You have been signed out');
     }
 
-    // Simulate API authentication
+    // Authenticate user via /auth endpoint
     async authenticateUser(email, password) {
-        // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        
-        // For demo purposes, accept any email/password combination
-        // In production, this would be a real API call
-        if (email && password) {
-            return { success: true, user: { email } };
-        } else {
-            throw new Error('Invalid credentials');
+        let response;
+        try {
+            response = await fetch('/auth', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ user: email, pass: password })
+            });
+        } catch (networkError) {
+            throw new Error('Unable to connect to server. Please try again.');
         }
+
+        const text = await response.text();
+
+        // If the response is blank, login failed
+        if (!text || text.trim() === '') {
+            throw new Error('Invalid username or password.');
+        }
+
+        // Parse JSON response and extract token
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch (parseError) {
+            throw new Error('Invalid username or password.');
+        }
+
+        if (!data.token) {
+            throw new Error('Invalid username or password.');
+        }
+
+        // Store the bearer token
+        this.bearerToken = data.token;
+
+        return { success: true, user: { email }, token: this.bearerToken };
     }
 
     // Validate email format
@@ -176,11 +204,12 @@ class AuthManager {
             console.warn('localStorage not available with file:// protocol');
             return;
         }
-        
+
         if (this.currentUser) {
             localStorage.setItem('l8vibe_auth', JSON.stringify({
                 user: this.currentUser,
                 authenticated: this.isAuthenticated,
+                token: this.bearerToken,
                 timestamp: Date.now()
             }));
         }
@@ -189,11 +218,12 @@ class AuthManager {
     // Check for stored authentication
     checkStoredAuth() {
         console.log('checkStoredAuth called - always starting signed out');
-        
+
         // Always clear any stored authentication and start in signed-out state
         localStorage.removeItem('l8vibe_auth');
         this.currentUser = null;
         this.isAuthenticated = false;
+        this.bearerToken = null;
         
         // Skip localStorage operations for file:// protocol
         if (window.location.protocol === 'file:') {
@@ -290,6 +320,22 @@ class AuthManager {
     // Check if user is authenticated
     isUserAuthenticated() {
         return this.isAuthenticated;
+    }
+
+    // Get bearer token for API calls
+    getBearerToken() {
+        return this.bearerToken;
+    }
+
+    // Get authorization headers for API calls
+    getAuthHeaders() {
+        const headers = {
+            'Content-Type': 'application/json'
+        };
+        if (this.bearerToken) {
+            headers['Authorization'] = `Bearer ${this.bearerToken}`;
+        }
+        return headers;
     }
 
     // Enable Create Project button

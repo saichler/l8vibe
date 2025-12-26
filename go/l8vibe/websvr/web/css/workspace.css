@@ -85,6 +85,12 @@ html, body {
   animation: subtle-pulse 3s ease-in-out infinite;
 }
 
+.workspace-logo-icon .logo-img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
 .workspace-logo-text {
   display: flex;
   flex-direction: column;

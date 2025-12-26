@@ -540,12 +540,10 @@ class MarketingManager {
             // Make API call to fetch projects with body as URL parameter
             const url = new URL('/l8vibe/0/proj', window.location.origin);
             url.searchParams.append('body', JSON.stringify(requestBody));
-            
+
             const response = await fetch(url, {
                 method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
+                headers: window.auth.getAuthHeaders()
             });
 
             if (!response.ok) {

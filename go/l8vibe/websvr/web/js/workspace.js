@@ -135,9 +135,7 @@ class WorkspaceManager {
             // Make POST request to create project
             const response = await fetch('/l8vibe/0/proj', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: window.auth.getAuthHeaders(),
                 body: JSON.stringify(requestBody)
             });
 
@@ -581,12 +579,10 @@ class WorkspaceManager {
 
             const url = new URL('/l8vibe/0/proj', window.location.origin);
             url.searchParams.append('body', JSON.stringify(requestBody));
-            
+
             const response = await fetch(url, {
                 method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
+                headers: window.auth.getAuthHeaders()
             });
 
             if (!response.ok) {
